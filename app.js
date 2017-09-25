@@ -8,6 +8,8 @@ const routes = require('./routes');
 const bodyParser = require('body-parser');
 const { Client } = require('pg');
 const client = new Client();
+const models = require('./models')
+
 
 client.connect();
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -20,6 +22,13 @@ nunjucks.configure('views', {noCache: true});
 app.set('view engine', 'html'); 
 app.engine('html', nunjucks.render);
 
-app.listen(3000, function() {
-    console.log('Server listening on port 3000');
+app.use( routes)
+
+
+models.db.sync({force: true})
+.then(() => {
+    app.listen(PORT, () => {
+        console.log('Server listening on port 3000');
+    });
 })
+.catch(console.error);
