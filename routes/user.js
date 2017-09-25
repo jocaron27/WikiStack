@@ -32,6 +32,6 @@ router.get('/:id',(req , res, next) => {
         res.render('single',{pages: pages, user: user})
     })
     .catch(next);
-})
+});
 
 module.exports = router;
