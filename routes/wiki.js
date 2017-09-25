@@ -3,7 +3,6 @@ const router = express.Router();
 const models = require('../models');
 const Page = models.Page;
 const User = models.User;
-//var Promise = require('bluebird');
 
 function createURL(title) {
     if (title) {
@@ -16,12 +15,12 @@ function createURL(title) {
 
 router.get('/', function (req, res, next) {
     Page.findAll({})
-        .then(function (foundPage) {
-            res.render('index', {
-                pages: foundPage
-            });
-        })
-        .catch(next);
+    .then(function (foundPage) {
+        res.render('index', {
+            pages: foundPage
+        });
+    })
+    .catch(next);
 });
 
 router.post('/', function (req, res, next) {
@@ -32,12 +31,12 @@ router.post('/', function (req, res, next) {
     const status = req.body.status;
 
     User.findOrCreate({
-            where: {
-                email: email,
-                name: name
-            }
-        })
-    .then(function(values) {
+        where: {
+            email: email,
+            name: name
+        }
+    })
+    .then(function (values) {
         const user = values[0];
         const page = Page.build({
             title: title,
@@ -45,9 +44,9 @@ router.post('/', function (req, res, next) {
             status: status,
         });
         return page.save()
-        .then((page) => {
-            return page.setAuthor(user);
-        });
+            .then((page) => {
+                return page.setAuthor(user);
+            });
     })
     .then(function (page) {
         res.redirect(page.urlTitle)
@@ -62,19 +61,19 @@ router.get('/add', function (req, res, next) {
 
 router.get('/:urlTitle', function (req, res, next) {
     Page.findOne({
-            where: {
-                urlTitle: req.params.urlTitle
-            }
-        })
-        .then(function (foundPage) {
+        where: {
+            urlTitle: req.params.urlTitle
+        }
+    })
+    .then(function (foundPage) {
 
-            res.render('wikipage', {
-                title: foundPage.title,
-                content: foundPage.content,
-                url: foundPage.urlTitle
-            });
-        })
-        .catch(next);
-})
+        res.render('wikipage', {
+            title: foundPage.title,
+            content: foundPage.content,
+            url: foundPage.urlTitle
+        });
+    })
+    .catch(next);
+    })
 
 module.exports = router;
