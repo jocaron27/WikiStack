@@ -27,6 +27,7 @@ const User = db.define('user',{
     email: {type: Sequelize.STRING, allowNull : false, validate: {isEmail: true}}
 });
 
+Page.belongsTo(User, {as: 'author'});
 
 module.exports = {
     Page: Page,
