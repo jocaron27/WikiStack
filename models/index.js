@@ -5,19 +5,19 @@ const Page = db.define('page',{
     title: {type: Sequelize.STRING,allowNull: false },
     urlTitle :{type:Sequelize.STRING, allowNull : false, get(){
         const url = this.getDataValue('urlTitle')
-        return '/wiki' + url;
+        return '/wiki/' + url;
     }},   //maybe
     content : {type:Sequelize.TEXT, allowNull : false},
     status :{type:Sequelize.ENUM('open', 'closed')},
     date :{type: Sequelize.DATE,defaultValue: Sequelize.NOW},
 }, {
     hooks: {
-        beforeValidate: (user) => {
-            if (user.title) {
-                var newTitle = user.title.replace(/\s+/g, "_").replace(/\W/g,"");
-                user.urlTitle = '/'+ newTitle;
+        beforeValidate: (page) => {
+            if (page.title) {
+                var newTitle = page.title.replace(/\s+/g, "_").replace(/\W/g,"");
+                page.urlTitle = newTitle;
             } else {
-                user.urlTitle = Math.random().toString(36).substring(2, 7);
+                page.urlTitle = Math.random().toString(36).substring(2, 7);
             }
         }
     }

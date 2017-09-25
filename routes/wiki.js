@@ -15,7 +15,11 @@ function createURL(title) {
 }
 
 router.get('/', function(req, res, next) {
-    res.redirect('/');
+    Page.findAll({}) 
+    .then(function(foundPage) {
+        res.render('index', {pages : foundPage});
+    })
+    .catch(next);
 });
 
 router.post('/', function(req, res, next) {
@@ -38,28 +42,24 @@ router.post('/', function(req, res, next) {
     .then(function (){
         res.redirect(page.urlTitle)
     })
-
-    // page.save(
-    //     return res.redirect(page.urlTitle)
-    // )
-    // .then()
-    
-        
+      
 });
 
 router.get('/add', function(req, res, next) {
     res.render('addpage');
 });
 
+router.get('/:urlTitle', function(req, res, next) {
+    Page.findOne({
+        where: {
+            urlTitle : req.params.urlTitle
+        }
+    }) 
+    .then(function(foundPage) {
+
+        res.render('wikipage', {title : foundPage.title, content: foundPage.content, url: foundPage.urlTitle});
+    })
+    .catch(next);
+})
+
 module.exports = router;
-
-
-// const promisifiedSavedPage = function () {
-// 	return new Promise(function (resolve, reject) {
-// 		});
-// };
-
-// promisifiedReadFile('poem-one/stanza-01.txt').then(function(stanza) {
-//     console.log(stanza);
-//     blue(stanza);
-// });
