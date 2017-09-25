@@ -3,6 +3,7 @@ const router = express.Router();
 const models = require('../models');
 const Page = models.Page; 
 const User = models.User; 
+//var Promise = require('bluebird');
 
 function createURL(title) {
     if (title) {
@@ -27,9 +28,23 @@ router.post('/', function(req, res, next) {
         title: title,
         content: content,
         status: status
+    });
+    
+
+    let pageBuilder = function() {
+        return page.save();
+    }
+    pageBuilder()
+    .then(function (){
+        res.redirect(page.urlTitle)
     })
-    page.save();
-    res.redirect('/');
+
+    // page.save(
+    //     return res.redirect(page.urlTitle)
+    // )
+    // .then()
+    
+        
 });
 
 router.get('/add', function(req, res, next) {
@@ -37,3 +52,14 @@ router.get('/add', function(req, res, next) {
 });
 
 module.exports = router;
+
+
+// const promisifiedSavedPage = function () {
+// 	return new Promise(function (resolve, reject) {
+// 		});
+// };
+
+// promisifiedReadFile('poem-one/stanza-01.txt').then(function(stanza) {
+//     console.log(stanza);
+//     blue(stanza);
+// });

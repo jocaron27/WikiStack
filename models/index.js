@@ -15,7 +15,7 @@ const Page = db.define('page',{
         beforeValidate: (user) => {
             if (user.title) {
                 var newTitle = user.title.replace(/\s+/g, "_").replace(/\W/g,"");
-                user.urlTitle = '/wiki/' + newTitle;
+                user.urlTitle = '/'+ newTitle;
             } else {
                 user.urlTitle = Math.random().toString(36).substring(2, 7);
             }

@@ -22,7 +22,7 @@ nunjucks.configure('views', {noCache: true});
 app.set('view engine', 'html'); 
 app.engine('html', nunjucks.render);
 
-app.use( routes)
+app.use( routes);
 
 
 models.db.sync({force: true})
